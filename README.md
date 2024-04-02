@@ -44,6 +44,7 @@ If the HTTP code indicates a client or server error, it will return $errorMessag
 Any other logic here, if necessary, but I’ll stop at this point.
 The class can be initialized with any values using a constructor, and a response with a payload will be immediately fired after creation. Here is the full class code in a minimal approach
 
+```
 namespace App\Http\Responses;
 
 use Illuminate\Contracts\Support\Responsable;
@@ -92,6 +93,7 @@ return new TheOneResponse(201,
 This approach looks more elegant, additionally, you can control all response logic in one place.
 
 > How does it work without a toResponse call? This is Laravel magic. When you return an instance of a class that implements Responsable from a controller method, Laravel automatically invokes the toResponse() method on that class and sends the resulting Response back to the client.
+
 
 However it may not be very convenient to use codes every time, and there’s no control over the passed parameters. You could easily be ambushed by orcs (make mistakes), like passing a 201 for the $httpCode along with an $errorMessage
 
