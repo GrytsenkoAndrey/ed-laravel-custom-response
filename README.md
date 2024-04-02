@@ -76,22 +76,28 @@ class TheOneResponse implements Responsable
         );
     }
 }
+```
+
 Now you can transform response()->json() call into
 
+```
 return new TheOneResponse(201, 
     [
         'id' => 100,
         'name' => 'Alexey Shatrov'
     ]
 );
+```
+
 This approach looks more elegant, additionally, you can control all response logic in one place.
 
-How does it work without a toResponse call? This is Laravel magic. When you return an instance of a class that implements Responsable from a controller method, Laravel automatically invokes the toResponse() method on that class and sends the resulting Response back to the client.
+> How does it work without a toResponse call? This is Laravel magic. When you return an instance of a class that implements Responsable from a controller method, Laravel automatically invokes the toResponse() method on that class and sends the resulting Response back to the client.
 
 However it may not be very convenient to use codes every time, and there’s no control over the passed parameters. You could easily be ambushed by orcs (make mistakes), like passing a 201 for the $httpCode along with an $errorMessage
 
 Lets add static methods called “Named Constructors” for common responses, which will accept only needed parameters and initialize our class with them
 
+```
 public static function ok(array $data)
 {
     return new static(200, $data)
@@ -108,8 +114,11 @@ public static function notFound(string $errorMessage = "Item not found")
 }
 
 ...
+```
+
 Example usage
 
+```
 public function controllerAction()
 {
     // Your controller logic...
@@ -120,11 +129,13 @@ public function controllerAction()
 
     return TheOneResponse::ok($item);
 }
+```
 
 This code is clear and convenient, and the class TheOneRequest itself is easy to work with.
 
 Here is the complete class code with named constructors. Additionally, simple validation logic for the passed $httpCode has been added.
 
+```
 namespace App\Http\Responses;
 
 use Illuminate\Contracts\Support\Responsable;
@@ -183,5 +194,7 @@ class TheOneResponse
     //add any other static methods here
 
 }
+```
+
 Also, you can make __construct private and use only named constructors
 
