@@ -152,7 +152,7 @@ namespace App\Http\Responses;
 
 use Illuminate\Contracts\Support\Responsable;
 
-class TheOneResponse
+class TheOneResponse implements Responsable
 {
     protected int $httpCode;
     protected array $data;
